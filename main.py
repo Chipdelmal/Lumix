@@ -8,45 +8,50 @@ from time import ctime, strptime, strftime
 
 
 (PTH_I, PTH_O) = (
-    path.join('/Volumes/LUMIX', 'DCIM/'),
-    # path.join('/Users/chipdelmal/Pictures/Lumix')
+    [
+        path.join('/Volumes/LUMIX', 'DCIM/'),
+        path.join('/Volumes/NIKON D3400', 'DCIM/')
+    ],
+    # path.join('/Volumes/Eunie/')
     path.join('/Volumes/Kai/Lumix')
 )
-MOVE = False
-###############################################################################
-# Get all folders and iterate over them
-###############################################################################
-fldrs = glob(path.join(PTH_I, '*'))
-for fldr in fldrs:
+MOVE = True
+for pth_i in PTH_I:
     ###########################################################################
-    # Get filenames and iterate over them
+    # Get all folders and iterate over them
     ###########################################################################
-    fnames = glob(path.join(fldr, '*'))
-    for fname in fnames:
-        print(f'\033[94m * Processing {fname}\033[0m')
+    fldrs = glob(path.join(pth_i, '*'))
+    for fldr in fldrs:
         #######################################################################
-        # Get file extensions
+        # Get filenames and iterate over them
         #######################################################################
-        fext = path.splitext(fname)[-1][1:]
-        #######################################################################
-        # Get file datetime
-        #######################################################################
-        (cTime, mTime) = (
-            strptime(ctime(path.getctime(fname))),
-            strptime(ctime(path.getmtime(fname)))
-        )
-        #######################################################################
-        # Create output folder
-        #######################################################################
-        fldrNme = strftime("%Y_%m_%d", cTime)
-        fldrOut = path.join(PTH_O, fldrNme, fext)
-        if not path.exists(fldrOut):
-            makedirs(fldrOut)
-        fnameOut = path.join(fldrOut, path.split(fname)[-1])
-        #######################################################################
-        # Move or Copy files
-        #######################################################################
-        if MOVE:
-            sht.move(fname, fnameOut)
-        else:
-            sht.copy(fname, fnameOut)
+        fnames = glob(path.join(fldr, '*'))
+        for fname in fnames:
+            pntStr = "Moving" if MOVE else "Copying"
+            print(f'\033[94m * {pntStr} {fname}\033[0m')
+            ###################################################################
+            # Get file extensions
+            ###################################################################
+            fext = path.splitext(fname)[-1][1:]
+            ###################################################################
+            # Get file datetime
+            ###################################################################
+            (cTime, mTime) = (
+                strptime(ctime(path.getctime(fname))),
+                strptime(ctime(path.getmtime(fname)))
+            )
+            ###################################################################
+            # Create output folder
+            ###################################################################
+            fldrNme = strftime("%Y_%m_%d", cTime)
+            fldrOut = path.join(PTH_O, fldrNme, fext)
+            if not path.exists(fldrOut):
+                makedirs(fldrOut)
+            fnameOut = path.join(fldrOut, path.split(fname)[-1])
+            ###################################################################
+            # Move or Copy files
+            ###################################################################
+            if MOVE:
+                sht.move(fname, fnameOut)
+            else:
+                sht.copy(fname, fnameOut)
