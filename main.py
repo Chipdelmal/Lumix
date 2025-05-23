@@ -10,12 +10,13 @@ from time import ctime, strptime, strftime
 (PTH_I, PTH_O) = (
     [
         path.join('/Volumes/LUMIX', 'DCIM/'),
-        path.join('/Volumes/NIKON D3400', 'DCIM/')
+        path.join('/Volumes/NIKON D3400', 'DCIM/'),
+        path.join('/Volumes/K-1 II', 'DCIM')
     ],
     # path.join('/Volumes/Eunie/')
     path.join('/Volumes/Kai/Lumix')
 )
-MOVE = True
+MOVE = False
 for pth_i in PTH_I:
     ###########################################################################
     # Get all folders and iterate over them
